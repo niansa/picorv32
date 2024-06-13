@@ -24,6 +24,7 @@
 #include "custom_ops.S"
 
 	.section .text
+	.global _start
 	.global irq
 	.global hello
 	.global sieve
@@ -38,6 +39,7 @@
 	.global hard_remu
 	.global stats
 
+_start:
 reset_vec:
 	// no more than 16 bytes here !
 	picorv32_waitirq_insn(zero)

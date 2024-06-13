@@ -1,25 +1,39 @@
-/*
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-*/
-
-MEMORY {
-	/* the memory in the testbench is 128k in size;
-	 * set LENGTH=96k and leave at least 32k for stack */
-	mem : ORIGIN = 0x00000000, LENGTH = 0x00018000
-}
-
 SECTIONS {
-	.memory : {
-		. = 0x000000;
-		start*(.text);
-		*(.text);
-		*(*);
-		end = .;
-		. = ALIGN(4);
-	} > mem
+    . = 0;
+    PROVIDE(__executable_start = .);
+    PROVIDE(__image_base = .);
+
+    PROVIDE(__text = .);
+    .text : {
+        *(.text._start)
+        *(.text .text.*)
+    }
+    PROVIDE(__etext = .);
+
+    .rodata                 : { *(.rodata .rodata.*) }
+    .eh_frame_hdr           : { KEEP(*(.eh_frame_hdr)) }
+    .eh_frame               : { PROVIDE(__eh_frame = .); KEEP(*(.eh_frame)) }
+    .dynsym                 : { *(.dynsym) }
+    .dynstr                 : { *(.dynstr) }
+    .rela                   : { *(.rela*) }
+    .dynamic                : { *(.dynamic) }
+    .got                    : { *(.got) }
+    .data.rel.ro            : { *(.data.rel.ro*) }
+    .data                   : {
+        *(.data .data.*)
+        *(.sdata .sdata.*)
+    }
+    PROVIDE(__global_pointer$ = .);
+    PROVIDE(__bss = .);
+    .bss                    : {
+        *(.sbss .sbss.*)
+        *(.dynbss)
+        *(.bss .bss.*)
+        *(COMMON)
+        . += 0x1000;
+        . = ALIGN(128);
+        PROVIDE(__boot_stackp = .);
+    }
+    PROVIDE(__ebss = .);
+    PROVIDE(__image_size = . - __image_base);
 }
