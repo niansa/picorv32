@@ -94,6 +94,18 @@ icebreaker_fw.hex: icebreaker_fw.elf
 icebreaker_fw.bin: icebreaker_fw.elf
 	$(CROSS)objcopy -O binary icebreaker_fw.elf icebreaker_fw.bin
 
+# ---- iCE40 pico-ice Board ----
+
+pico_ice.json: pico_ice.v ice40up5k_spram.v spimemio.v simpleuart.v picosoc.v ../picorv32.v
+	yosys -ql pico_ice.log -p 'synth_ice40 -dsp -top pico_ice -json pico_ice.json' $^
+
+pico_ice.asc: pico_ice.pcf pico_ice.json
+	nextpnr-ice40 --freq 12 --up5k --package sg48 --asc pico_ice.asc --pcf pico_ice.pcf --json pico_ice.json
+
+pico_ice.bin: pico_ice.asc
+	icetime -d up5k -c 12 -mtr pico_ice.rpt pico_ice.asc
+	icepack pico_ice.asc pico_ice.bin
+
 # ---- Testbench for SPI Flash Model ----
 
 spiflash_tb: spiflash_tb.vvp icebreaker_fw.hex

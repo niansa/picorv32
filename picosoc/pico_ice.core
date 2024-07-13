@@ -1,0 +1,23 @@
+CAPI=2:
+
+name : ::pico_ice:0
+
+filesets:
+  top:
+    files: [pico_ice.v]
+    file_type : verilogSource
+    depend : [picosoc]
+
+  constraints:
+    files: [pico_ice.pcf]
+    file_type : PCF
+
+targets:
+  synth:
+    default_tool : icestorm
+    filesets : [constraints, top]
+    tools:
+      icestorm:
+        nextpnr_options : [--freq, 12, --up5k]
+        pnr : next
+    toplevel : [pico_ice]
