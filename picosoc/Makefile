@@ -129,6 +129,7 @@ clean:
 	rm -f hx8kdemo_syn.v hx8kdemo_syn_tb.vvp hx8kdemo_tb.vvp
 	rm -f icebreaker.json icebreaker.log icebreaker.asc icebreaker.rpt icebreaker.bin
 	rm -f icebreaker_syn.v icebreaker_syn_tb.vvp icebreaker_tb.vvp
+	rm -f pico_ice.asc pico_ice.bin pico_ice.json pico_ice.log pico_ice.rpt
 
 .PHONY: spiflash_tb clean
 .PHONY: hx8kprog hx8kprog_fw hx8ksim hx8ksynsim

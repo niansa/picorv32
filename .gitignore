@@ -29,6 +29,7 @@
 /testbench.gtkw
 /testbench.vcd
 /testbench.trace
+/testbench.log
 /testbench_verilator*
 /check.smt2
 /check.vcd
